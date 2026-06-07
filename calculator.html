@@ -338,11 +338,16 @@
       const raw = document.getElementById('numInput').value.trim();
       const num = parseInt(raw, 10); // 문자열을 10진수 정수로 변환
 
-      // 입력값 유효성 검사: 빈 값, 숫자가 아닌 값, 0 이하 차단
-      if (raw === '' || isNaN(num) || num < 1) {
-        errEl.textContent = '1 이상의 출석번호를 입력해 주세요.';
+      // 입력값 유효성 검사: 빈 값, 정수가 아닌 값, 1~29 범위 밖 차단
+      if (raw === '' || isNaN(num) || !Number.isInteger(num)) {
+        errEl.textContent = '1~29 사이의 자연수를 입력해 주세요.';
         errEl.style.display = 'block';
-        return; // 이후 코드 실행 중단
+        return;
+      }
+      if (num < 1 || num >= 30) {
+        errEl.textContent = `출석번호는 1~29 사이여야 합니다. (입력값: ${num})`;
+        errEl.style.display = 'block';
+        return;
       }
 
       // 핵심 계산: 출석번호 % 4 → 나머지로 주행거리 결정
